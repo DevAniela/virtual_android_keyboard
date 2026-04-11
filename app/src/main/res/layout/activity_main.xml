@@ -8,44 +8,32 @@
     android:fadeScrollbars="true"
     tools:context=".MainActivity">
 
-    <EditText
-        android:id="@+id/textViewHistory"
-        android:layout_width="85dp"
-        android:layout_height="208dp"
-        android:ems="10"
-        android:fadeScrollbars="false"
-        android:fontFamily="serif-monospace"
-        android:gravity="top"
-        android:inputType="textMultiLine"
-        android:overScrollMode="always"
-        android:scrollIndicators="right"
-        android:scrollbarStyle="insideOverlay"
-        android:scrollbars="vertical"
-        android:scrollHorizontally="false"
-        android:textStyle="bold"
-        android:typeface="serif"
-        android:verticalScrollbarPosition="right"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toEndOf="@+id/linearLayout"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/textViewHistory"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <EditText
-            android:id="@+id/editTextCurrent"
+            android:id="@+id/textA"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:height="48dp"
+            android:ems="10"
+            android:fontFamily="serif-monospace"
+            android:hint="0"
+            android:inputType="text|textNoSuggestions"
+            android:textAlignment="textEnd"
+            android:textStyle="bold"
+            android:typeface="serif" />
+
+        <EditText
+            android:id="@+id/textC"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:height="48dp"

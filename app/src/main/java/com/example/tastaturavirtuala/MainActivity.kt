@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         // Conectarea casetelor de text
-        val editTextCurrent = findViewById<EditText>(R.id.editTextCurrent)
+        val editTextCurrent = findViewById<EditText>(R.id.textA)
         val textViewHistory = findViewById<TextView>(R.id.textViewHistory)
 
         // Activarea scroll-ului prin atingere pentru caseta cu istoricul
