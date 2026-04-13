@@ -504,11 +504,27 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btnback"
+                android:id="@+id/btn10_16"
                 android:layout_width="65dp"
                 android:layout_height="30dp"
                 android:layout_margin="1dp"
                 android:layout_weight="1"
+                android:backgroundTint="@color/green"
+                android:fontFamily="serif-monospace"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="10/16"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:typeface="serif"
+                app:cornerRadius="0dp" />
+
+            <Button
+                android:id="@+id/btnback"
+                android:layout_width="65dp"
+                android:layout_height="30dp"
+                android:layout_margin="1dp"
+                android:layout_weight="2.1"
                 android:backgroundTint="@color/red"
                 android:fontFamily="serif-monospace"
                 android:insetTop="0dp"
@@ -519,17 +535,73 @@
                 android:typeface="serif"
                 app:cornerRadius="0dp" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="horizontal">
+
             <Button
-                android:id="@+id/btnOk"
-                android:layout_width="65dp"
+                android:id="@+id/btnAdd"
+                android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_margin="1dp"
                 android:layout_weight="1"
-                android:backgroundTint="@color/green"
+                android:backgroundTint="@color/orange"
                 android:fontFamily="serif-monospace"
                 android:insetTop="0dp"
                 android:insetBottom="0dp"
-                android:text="OK"
+                android:text="+"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:typeface="serif"
+                app:cornerRadius="0dp" />
+
+            <Button
+                android:id="@+id/btnSubstract"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/orange"
+                android:fontFamily="serif-monospace"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="-"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:typeface="serif"
+                app:cornerRadius="0dp" />
+
+            <Button
+                android:id="@+id/btnMultiply"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_margin="1dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/orange"
+                android:fontFamily="serif-monospace"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="*"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:typeface="serif"
+                app:cornerRadius="0dp" />
+
+            <Button
+                android:id="@+id/btnEgal"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
+                android:layout_margin="1dp"
+                android:layout_weight="2"
+                android:backgroundTint="@color/blue"
+                android:fontFamily="serif-monospace"
+                android:insetTop="0dp"
+                android:insetBottom="0dp"
+                android:text="="
                 android:textColor="@color/black"
                 android:textStyle="bold"
                 android:typeface="serif"

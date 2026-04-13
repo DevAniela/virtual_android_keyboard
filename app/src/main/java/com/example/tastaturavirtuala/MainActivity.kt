@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
 
         // Conectarea butoanelor de control
         val btnBack = findViewById<Button>(R.id.btnback)
-        val btnOk = findViewById<Button>(R.id.btnOk)
+        val btnOk = findViewById<Button>(R.id.btn10_16)
 
         // Lista cu toate id-urile butoanelor hexa
         val butoaneHexaIds = listOf(
