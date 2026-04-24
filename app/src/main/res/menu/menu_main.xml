@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_calcul"
+        android:title="Calcul"
+        android:icon="@drawable/outline_avg_pace_24"
+        app:showAsAction="ifRoom|withText" /> <!-- Poziționează butonul direct pe bară, cu tot cu text, dacă nu e loc, afișează meniu cu 3 puncte -->
+
+    <item
+        android:id="@+id/action_istoric"
+        android:title="Istoric"
+        android:icon="@drawable/outline_alarm_add_24"
+        app:showAsAction="ifRoom|withText" />
+
+    <item
+        android:id="@+id/action_email"
+        android:title="Email"
+        android:icon="@drawable/outline_attach_email_24"
+        app:showAsAction="ifRoom|withText" />
+
+</menu>

@@ -544,7 +544,7 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/btnAdd"
+                android:id="@+id/btnPlus"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_margin="1dp"
@@ -560,7 +560,7 @@
                 app:cornerRadius="0dp" />
 
             <Button
-                android:id="@+id/btnSubstract"
+                android:id="@+id/btnMinus"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_margin="1dp"
@@ -576,7 +576,7 @@
                 app:cornerRadius="0dp" />
 
             <Button
-                android:id="@+id/btnMultiply"
+                android:id="@+id/btnInmultire"
                 android:layout_width="0dp"
                 android:layout_height="30dp"
                 android:layout_margin="1dp"

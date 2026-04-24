@@ -1,6 +1,8 @@
 package com.example.tastaturavirtuala
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -15,20 +17,51 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        // Conectarea casetelor de text
-        val editTextCurrent = findViewById<EditText>(R.id.textA)
-        val textViewHistory = findViewById<TextView>(R.id.textViewHistory)
+        // Conectarea casetelor de text (acum avem două)
+        val textA = findViewById<EditText>(R.id.textA)
+        val textC = findViewById<TextView>(R.id.textC)
 
-        // Activarea scroll-ului prin atingere pentru caseta cu istoricul
-        textViewHistory.movementMethod = android.text.method.ScrollingMovementMethod()
+        // Textul din A e setat la zero la început
+        textA.setText("0")
 
         // Conectarea butoanelor de control
         val btnBack = findViewById<Button>(R.id.btnback)
-        val btnOk = findViewById<Button>(R.id.btn10_16)
+        val btn10_16 = findViewById<Button>(R.id.btn10_16)
+
+        // Conectarea butoanelor de operatii
+        val btnPlus = findViewById<Button>(R.id.btnPlus)
+        val btnMinus = findViewById<Button>(R.id.btnMinus)
+        val btnInmultire = findViewById<Button>(R.id.btnInmultire)
+        val btnEgal = findViewById<Button>(R.id.btnEgal)
+
+        // Se cere ca butonul egal să fie inițial dezactivat
+        btnEgal.isEnabled = false
+
+        // Creăm o scurtătură ca să nu scriem de 3 ori același cod
+        val aplicaOperatie = {
+            operatie: String -> val textCurent = textC.text.toString()
+
+            // Copiem nr din textC în textA și adăugăm operația
+            textA.setText("$textCurent $operatie")
+
+            // Resetăm textC la 0 pt a putea tasta următorul nr
+            textC.setText("0")
+
+            // Activăm butonul egal
+            btnEgal.isEnabled = true
+        }
+
+        // Legăm butoanele de funcția de mai sus
+        btnPlus.setOnClickListener { aplicaOperatie("+") }
+        btnMinus.setOnClickListener { aplicaOperatie("-") }
+        btnInmultire.setOnClickListener { aplicaOperatie("*") }
+        btnEgal.setOnClickListener {
+            // TO DO: add calculations
+            btnEgal.isEnabled = false
+        }
 
         // Lista cu toate id-urile butoanelor hexa
         val butoaneHexaIds = listOf(
-            R.id.btn0,
             R.id.btn1,
             R.id.btn2,
             R.id.btn3,
@@ -53,33 +86,26 @@ class MainActivity : AppCompatActivity() {
 
             // ii spunem butonului ce sa faca atunci cand este apasat
             butonCurent.setOnClickListener {
-                val textExistent = editTextCurrent.text.toString() // luam textul din caseta
-                val literaButon =
-                    butonCurent.text.toString() // luam litera de pe butonul pe care am apasat
-                editTextCurrent.setText(textExistent + literaButon) // lipim litera noua la textul vechi si il afisam
+                val textExistent = textC.text.toString() // luam textul din caseta textC
+                val literaButon = butonCurent.text.toString() // luam litera de pe butonul pe care am apasat
+
+                // Dacă nu am avea 0 la început
+                if (textExistent == "0")
+                {
+                    textC.setText(literaButon)
+                } else {
+                    textC.setText(textExistent + literaButon) // lipim litera noua la textul vechi si il afisam
+                }
             }
         }
 
         btnBack.setOnClickListener {
-            val textCurent = editTextCurrent.text.toString()
+            val textCurent = textC.text.toString()
 
-            // verifcam caseta de text inainte de a sterge
+            // verificam caseta de text inainte de a sterge
             if (textCurent.isNotEmpty()) {
-                val textScurtat = textCurent.dropLast(1) // se sterge ultima litera
-                editTextCurrent.setText(textScurtat)
-            }
-        }
-
-        btnOk.setOnClickListener {
-            val textCurent = editTextCurrent.text.toString()
-
-            // verificam daca utilizatorul a tastat ceva
-            if (textCurent.isNotEmpty()) {
-                val istoricExistent = textViewHistory.text.toString() // luam istoricul existent
-                // adaugam numarul nou si un "\n" ca sa apara unele sub altele
-                textViewHistory.text = istoricExistent + textCurent + "\n"
-                // golim campul text de sus pentru o noua inserare
-                editTextCurrent.setText("")
+                val textScurtat = textCurent.dropLast(1) // se șterge ultima litera
+                textC.setText(textScurtat)
             }
         }
 
@@ -88,5 +114,21 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+    }
+    // FUNCTIILE PENTRU MENIU
+
+    override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
+        // Când apăsăm pe Istoric în primul ecran, mergem la Activity2
+        if(item.itemId == R.id.action_istoric) {
+            val intent = android.content.Intent(this, Activity2::class.java)
+            startActivity(intent)
+            return true
+        }
+        return super.onOptionsItemSelected(item)
     }
 }
