@@ -17,50 +17,85 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        // Conectarea casetelor de text (acum avem două)
+        // conectarea casetelor de text (acum avem două)
         val textA = findViewById<EditText>(R.id.textA)
         val textC = findViewById<TextView>(R.id.textC)
 
-        // Textul din A e setat la zero la început
+        // textul din A e setat la zero la inceput
         textA.setText("0")
 
-        // Conectarea butoanelor de control
+        // conectarea butoanelor de control
         val btnBack = findViewById<Button>(R.id.btnback)
         val btn10_16 = findViewById<Button>(R.id.btn10_16)
 
-        // Conectarea butoanelor de operatii
+        // conectarea butoanelor de operatii
         val btnPlus = findViewById<Button>(R.id.btnPlus)
         val btnMinus = findViewById<Button>(R.id.btnMinus)
         val btnInmultire = findViewById<Button>(R.id.btnInmultire)
         val btnEgal = findViewById<Button>(R.id.btnEgal)
 
-        // Se cere ca butonul egal să fie inițial dezactivat
+        // se cere ca butonul egal sa fie initial dezactivat
         btnEgal.isEnabled = false
 
-        // Creăm o scurtătură ca să nu scriem de 3 ori același cod
+        // cream o functie lambda pt a nu scrie acelasi cod de mai multe ori
         val aplicaOperatie = {
             operatie: String -> val textCurent = textC.text.toString()
 
-            // Copiem nr din textC în textA și adăugăm operația
+            // copiem nr din textC în textA și adaugam operatia
             textA.setText("$textCurent $operatie")
 
-            // Resetăm textC la 0 pt a putea tasta următorul nr
+            // resetam textC la 0 pt a putea tasta urmatorul nr
             textC.setText("0")
 
-            // Activăm butonul egal
+            // activam butonul egal
             btnEgal.isEnabled = true
         }
 
-        // Legăm butoanele de funcția de mai sus
+        // legam butoanele de functia de mai sus
         btnPlus.setOnClickListener { aplicaOperatie("+") }
         btnMinus.setOnClickListener { aplicaOperatie("-") }
         btnInmultire.setOnClickListener { aplicaOperatie("*") }
+        // calculele pt butonul egal
         btnEgal.setOnClickListener {
-            // TO DO: add calculations
+            val textAVal = textA.text.toString()
+            val textCVal = textC.text.toString()
+
+            // verificam daca exista o operatie salvata in textA (exista spatiu)
+            if(textAVal.isNotEmpty() && textAVal.contains(" ")) {
+                // despartim textul din A in doua folosind spatiul ca delimitator
+                val parti = textAVal.split(" ")
+                val nr1Str = parti[0]
+                val operatie = parti[1]
+                val nr2Str = textCVal
+
+                try {
+                    // convertim textele in numere
+                    val nr1 = nr1Str.toLong()
+                    val nr2 = nr2Str.toLong()
+                    var rezultat = 0L // long
+
+                    // efectuam calculul in functie de semn
+                    when (operatie) {
+                        "+" -> rezultat = nr1 + nr2
+                        "-" -> rezultat = nr1 - nr2
+                        "*" -> rezultat = nr1 * nr2
+                    }
+
+                    // afisam rezultatul
+                    textA.setText("$rezultat =")
+
+                    // resetam textC la 0
+                    textC.setText("0")
+
+                    // TODO: adaugam cod pt istoric
+                } catch (e: Exception) {
+                    textA.setText("Eroare")
+                }
+            }
             btnEgal.isEnabled = false
         }
 
-        // Lista cu toate id-urile butoanelor hexa
+        // lista cu toate id-urile butoanelor hexa
         val butoaneHexaIds = listOf(
             R.id.btn1,
             R.id.btn2,
@@ -89,7 +124,7 @@ class MainActivity : AppCompatActivity() {
                 val textExistent = textC.text.toString() // luam textul din caseta textC
                 val literaButon = butonCurent.text.toString() // luam litera de pe butonul pe care am apasat
 
-                // Dacă nu am avea 0 la început
+                // daca nu am avea 0 la inceput
                 if (textExistent == "0")
                 {
                     textC.setText(literaButon)
@@ -123,7 +158,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
-        // Când apăsăm pe Istoric în primul ecran, mergem la Activity2
+        // cand apasam pe istoric in primul ecran, mergem la Activity2
         if(item.itemId == R.id.action_istoric) {
             val intent = android.content.Intent(this, Activity2::class.java)
             startActivity(intent)
