@@ -55,6 +55,9 @@ class MainActivity : AppCompatActivity() {
         btnPlus.setOnClickListener { aplicaOperatie("+") }
         btnMinus.setOnClickListener { aplicaOperatie("-") }
         btnInmultire.setOnClickListener { aplicaOperatie("*") }
+
+        var esteBaza10 = true // starea initiala (baza 10)
+
         // calculele pt butonul egal
         btnEgal.setOnClickListener {
             val textAVal = textA.text.toString()
@@ -69,9 +72,11 @@ class MainActivity : AppCompatActivity() {
                 val nr2Str = textCVal
 
                 try {
-                    // convertim textele in numere
-                    val nr1 = nr1Str.toLong()
-                    val nr2 = nr2Str.toLong()
+                    // convertim textele in numere (tinand cont de baza curenta)
+                    val radix = if (esteBaza10) 10 else 16
+                    val nr1 = nr1Str.toLong(radix)
+                    val nr2 = nr2Str.toLong(radix)
+                    // transformam rezultatul inapoi in text (in baza potrivita)
                     var rezultat = 0L // long
 
                     // efectuam calculul in functie de semn
@@ -82,12 +87,13 @@ class MainActivity : AppCompatActivity() {
                     }
 
                     // afisam rezultatul
-                    textA.setText("$rezultat =")
+                    val rezFinalStr = if (esteBaza10) rezultat.toString(10) else rezultat.toString(16).uppercase()
+                    textA.setText("$rezFinalStr =")
 
                     // resetam textC la 0
                     textC.setText("0")
 
-                    // TODO: adaugam cod pt istoric
+                    // TODO: cod pt istoric
                 } catch (e: Exception) {
                     textA.setText("Eroare")
                 }
@@ -149,7 +155,71 @@ class MainActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+
+        // BAZA 10/16
+
+        // salvam id-urile literelor intr-o lista separata pentru a le putea activa/dezactiva usor
+        val litereHexaIds = listOf(R.id.btnA, R.id.btnB, R.id.btnC, R.id.btnD, R.id.btnE, R.id.btnF)
+
+        // dezactivam literele pt ca pornim din baza 10
+        for(id in litereHexaIds) {
+            findViewById<Button>(id).isEnabled = false
+        }
+
+        btn10_16.setBackgroundColor(resources.getColor(R.color.green, null))
+
+        btn10_16.setOnClickListener {
+            // inversam starea
+            esteBaza10 = !esteBaza10
+
+            // se schimba culoarea si se dezactiveaza/activeaza literele
+            val culoareNoua = if (esteBaza10) R.color.green else R.color.pink
+            btn10_16.setBackgroundColor(resources.getColor(culoareNoua, null))
+
+            // culoarea pt text
+            textA.setTextColor(resources.getColor(culoareNoua, null))
+            textC.setTextColor(resources.getColor(culoareNoua, null))
+
+            for (id in litereHexaIds) {
+                findViewById<Button>(id).isEnabled = !esteBaza10
+            }
+
+            // convertim valoarea din caseta curenta (textC)
+            val valC = textC.text.toString()
+            if (valC != "0" && valC.isNotEmpty()) {
+                try {
+                    if(esteBaza10) {
+                        // transformam din 16 in 10
+                        textC.setText(valC.toLong(16).toString(10).uppercase())
+                    } else {
+                        // transformam din 10 in 16
+                        textC.setText(valC.toLong(10).toString(16).uppercase())
+                    }
+                } catch (e:Exception) {
+                    textC.setText("0")
+                }
+            }
+
+            // convertim valoarea in TextA
+            val valA = textA.text.toString()
+            if(valA != "0" && valA.contains(" ")) {
+                val parti = valA.split(" ")
+                val numar = parti[0]
+                val operatie = parti[1]
+
+                try {
+                    if(esteBaza10) {
+                        val convertit = numar.toLong(16).toString(10)
+                        textA.setText("$convertit, $operatie")
+                    } else {
+                        val convertit = numar.toLong(10).toString(16).uppercase()
+                        textA.setText("$convertit, $operatie")
+                    }
+                } catch (e: Exception) {}
+            }
+        }
     }
+
     // FUNCTIILE PENTRU MENIU
 
     override fun onCreateOptionsMenu(menu: android.view.Menu?): Boolean {
