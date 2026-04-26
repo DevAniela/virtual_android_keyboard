@@ -12,17 +12,32 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 
 class MainActivity : AppCompatActivity() {
+
+    var istoricOperatii = ArrayList<String>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContentView(R.layout.activity_main)
 
-        // conectarea casetelor de text (acum avem două)
+        // conectarea casetelor de text (acum avem doua)
         val textA = findViewById<EditText>(R.id.textA)
         val textC = findViewById<TextView>(R.id.textC)
 
         // textul din A e setat la zero la inceput
         textA.setText("0")
+
+        // PRELUAREA DATELOR DE PE ECRANUL 2
+        val valoareDinIstoric = intent.getStringExtra("VALOARE_SELECTATA")
+        if (valoareDinIstoric != null) {
+            textC.text = valoareDinIstoric
+        }
+
+        // recuperam si lista de istoric
+        val istoricPrimit = intent.getStringArrayListExtra("ISTORIC")
+        if (istoricPrimit != null) {
+            istoricOperatii = istoricPrimit
+        }
 
         // conectarea butoanelor de control
         val btnBack = findViewById<Button>(R.id.btnback)
@@ -34,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         val btnInmultire = findViewById<Button>(R.id.btnInmultire)
         val btnEgal = findViewById<Button>(R.id.btnEgal)
 
-        // se cere ca butonul egal sa fie initial dezactivat
+        // butonul egal e initial dezactivat
         btnEgal.isEnabled = false
 
         // cream o functie lambda pt a nu scrie acelasi cod de mai multe ori
@@ -90,10 +105,13 @@ class MainActivity : AppCompatActivity() {
                     val rezFinalStr = if (esteBaza10) rezultat.toString(10) else rezultat.toString(16).uppercase()
                     textA.setText("$rezFinalStr =")
 
+                    // operatia in lista de istoric
+                    val ecuatie = "$nr1Str $operatie $nr2Str = $rezFinalStr"
+                    istoricOperatii.add(ecuatie)
+
                     // resetam textC la 0
                     textC.setText("0")
 
-                    // TODO: cod pt istoric
                 } catch (e: Exception) {
                     textA.setText("Eroare")
                 }
@@ -210,10 +228,10 @@ class MainActivity : AppCompatActivity() {
                 try {
                     if(esteBaza10) {
                         val convertit = numar.toLong(16).toString(10)
-                        textA.setText("$convertit, $operatie")
+                        textA.setText("$convertit $operatie")
                     } else {
                         val convertit = numar.toLong(10).toString(16).uppercase()
-                        textA.setText("$convertit, $operatie")
+                        textA.setText("$convertit $operatie")
                     }
                 } catch (e: Exception) {}
             }
@@ -228,10 +246,40 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: android.view.MenuItem): Boolean {
-        // cand apasam pe istoric in primul ecran, mergem la Activity2
+
+        // cand apasam pe istoric
         if(item.itemId == R.id.action_istoric) {
             val intent = android.content.Intent(this, Activity2::class.java)
+
+            intent.putStringArrayListExtra("ISTORIC", istoricOperatii)
+
             startActivity(intent)
+            return true
+        }
+
+        // cand apasam pe email
+        if(item.itemId == R.id.action_email) {
+            // cream un Intent IMPLICIT de tip SEND
+            val intentEmail = android.content.Intent(android.content.Intent.ACTION_SEND)
+
+            // ii spunem ca vrem sa trimitem un mesaj text/email
+            intentEmail.type = "message/rfc822"
+
+            // setam subiectul
+            intentEmail.putExtra(android.content.Intent.EXTRA_SUBJECT, "Istoric calcule")
+
+            // transformam lista cu istoric intr-un singur text lung, cu spatii intre randuri
+            val istoricCaText = istoricOperatii.joinToString(separator = "\n")
+
+            // punem textul in corpul emailului
+            intentEmail.putExtra(android.content.Intent.EXTRA_TEXT, "istoricul meu:\n\n$istoricCaText")
+
+            // pornim intent-ul printr-un createChooser (ca sa lase userul sa aleaga Gmail/Yahoo etc.)
+            try {
+                startActivity(android.content.Intent.createChooser(intentEmail, "Alege aplicația de Email..."))
+            } catch (e: Exception) {
+                // daca telefonul nu are nicio aplicatie de email instalata
+            }
             return true
         }
         return super.onOptionsItemSelected(item)
